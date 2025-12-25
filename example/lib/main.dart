@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter_audio_streamer/flutter_audio_streamer.dart' as flutter_audio_streamer;
 
 void main() {
+  final lib = flutter_audio_streamer.sum(1, 2);
+  print(lib);
   runApp(const MyApp());
 }
 
@@ -17,6 +19,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late int sumResult;
   late Future<int> sumAsyncResult;
+  
 
   @override
   void initState() {

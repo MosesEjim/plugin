@@ -15,55 +15,102 @@ import 'dart:ffi' as ffi;
 class FlutterAudioStreamerBindings {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-      _lookup;
+  _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
   FlutterAudioStreamerBindings(ffi.DynamicLibrary dynamicLibrary)
-      : _lookup = dynamicLibrary.lookup;
+    : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   FlutterAudioStreamerBindings.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
-      : _lookup = lookup;
+    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
+  ) : _lookup = lookup;
 
-  /// A very short-lived native function.
-  ///
-  /// For very short-lived functions, it is fine to call them on the main isolate.
-  /// They will block the Dart execution while running the native function, so
-  /// only do this for native functions which are guaranteed to be short-lived.
-  int sum(
-    int a,
-    int b,
-  ) {
-    return _sum(
-      a,
-      b,
-    );
+  /// lifecycle
+  int fas_init() {
+    return _fas_init();
   }
 
-  late final _sumPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int)>>('sum');
-  late final _sum = _sumPtr.asFunction<int Function(int, int)>();
+  late final _fas_initPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+    'fas_init',
+  );
+  late final _fas_init = _fas_initPtr.asFunction<int Function()>();
 
-  /// A longer lived native function, which occupies the thread calling it.
-  ///
-  /// Do not call these kind of native functions in the main isolate. They will
-  /// block Dart execution. This will cause dropped frames in Flutter applications.
-  /// Instead, call these native functions on a separate isolate.
-  int sum_long_running(
-    int a,
-    int b,
-  ) {
-    return _sum_long_running(
-      a,
-      b,
-    );
+  int fas_start() {
+    return _fas_start();
   }
 
-  late final _sum_long_runningPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int)>>(
-          'sum_long_running');
-  late final _sum_long_running =
-      _sum_long_runningPtr.asFunction<int Function(int, int)>();
+  late final _fas_startPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+    'fas_start',
+  );
+  late final _fas_start = _fas_startPtr.asFunction<int Function()>();
+
+  int fas_stop() {
+    return _fas_stop();
+  }
+
+  late final _fas_stopPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+    'fas_stop',
+  );
+  late final _fas_stop = _fas_stopPtr.asFunction<int Function()>();
+
+  int fas_dispose() {
+    return _fas_dispose();
+  }
+
+  late final _fas_disposePtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+    'fas_dispose',
+  );
+  late final _fas_dispose = _fas_disposePtr.asFunction<int Function()>();
+
+  /// configuration
+  int fas_set_stream_info(
+    ffi.Pointer<ffi.Char> host,
+    int port,
+    ffi.Pointer<ffi.Char> mount,
+    ffi.Pointer<ffi.Char> password,
+  ) {
+    return _fas_set_stream_info(host, port, mount, password);
+  }
+
+  late final _fas_set_stream_infoPtr = _lookup<
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Int,
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+      )
+    >
+  >('fas_set_stream_info');
+  late final _fas_set_stream_info =
+      _fas_set_stream_infoPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+            )
+          >();
+
+  /// audio input
+  int fas_push_pcm(
+    ffi.Pointer<ffi.Short> left,
+    ffi.Pointer<ffi.Short> right,
+    int samples,
+  ) {
+    return _fas_push_pcm(left, right, samples);
+  }
+
+  late final _fas_push_pcmPtr = _lookup<
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.Short>, ffi.Pointer<ffi.Short>, ffi.Int)
+    >
+  >('fas_push_pcm');
+  late final _fas_push_pcm =
+      _fas_push_pcmPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Short>, ffi.Pointer<ffi.Short>, int)
+          >();
 }

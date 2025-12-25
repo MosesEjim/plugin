@@ -8,6 +8,9 @@ output: 'lib/flutter_audio_streamer_bindings_generated.dart'
 headers:
   entry-points:
     - 'src/flutter_audio_streamer.h'
+    - ios/lame_wrapper.h
+    - src/Classes/shout_wrapper.h
+     - src/Classes/lame_wrapper.h
   include-directives:
     - 'src/flutter_audio_streamer.h'
 preamble: |

@@ -1,23 +1,56 @@
 #include "flutter_audio_streamer.h"
 
-// A very short-lived native function.
-//
-// For very short-lived functions, it is fine to call them on the main isolate.
-// They will block the Dart execution while running the native function, so
-// only do this for native functions which are guaranteed to be short-lived.
-FFI_PLUGIN_EXPORT int sum(int a, int b) { return a + b; }
+#include "shout_wrapper.h"
+#include "lame_wrapper.h"
 
-// A longer-lived native function, which occupies the thread calling it.
-//
-// Do not call these kind of native functions in the main isolate. They will
-// block Dart execution. This will cause dropped frames in Flutter applications.
-// Instead, call these native functions on a separate isolate.
-FFI_PLUGIN_EXPORT int sum_long_running(int a, int b) {
-  // Simulate work.
-#if _WIN32
-  Sleep(5000);
-#else
-  usleep(5000 * 1000);
-#endif
-  return a + b;
+
+
+static lame_global_flags* g_lame = NULL;
+static shout_t* g_shout = NULL;
+
+int fas_init() {
+    g_lame = lame_init_wrapper();
+    if (!g_lame) return -1;
+
+    lame_set_in_samplerate_wrapper(g_lame, 44100);
+    lame_set_out_samplerate_wrapper(g_lame, 44100);
+    lame_set_num_channels_wrapper(g_lame, 2);
+    lame_init_params_wrapper(g_lame);
+
+    g_shout = shout_new_wrapper();
+    return g_shout ? 0 : -2;
+}
+
+int fas_start() {
+    return shout_open_wrapper(g_shout);
+}
+
+int fas_push_pcm(const short* l, const short* r, int samples) {
+    unsigned char mp3buf[8192];
+
+    int encoded = lame_encode_buffer_wrapper(
+        g_lame,
+        (short*)l,
+        (short*)r,
+        samples,
+        mp3buf,
+        sizeof(mp3buf)
+    );
+
+    if (encoded > 0) {
+        return shout_send_wrapper(g_shout, mp3buf, encoded);
+    }
+    return encoded;
+}
+
+int fas_stop() {
+    lame_encode_flush_wrapper(g_lame, NULL, 0);
+    shout_close_wrapper(g_shout);
+    return 0;
+}
+
+int fas_dispose() {
+    lame_close_wrapper(g_lame);
+    //shout_free_wrapper(g_shout);
+    return 0;
 }

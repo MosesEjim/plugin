@@ -1,3 +1,6 @@
+#pragma once
+
+#include <shout/shout.h>
 // shout_wrapper.h
 #ifdef __cplusplus
 extern "C" {
