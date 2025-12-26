@@ -10,7 +10,7 @@ headers:
     - 'src/flutter_audio_streamer.h'
     - ios/lame_wrapper.h
     - src/Classes/shout_wrapper.h
-     - src/Classes/lame_wrapper.h
+    - src/Classes/lame_wrapper.h
   include-directives:
     - 'src/flutter_audio_streamer.h'
 preamble: |

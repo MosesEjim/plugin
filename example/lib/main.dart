@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:ffi';
+import 'package:ffi/ffi.dart';
 
 import 'package:flutter_audio_streamer/flutter_audio_streamer.dart' as flutter_audio_streamer;
 
 void main() {
-  final lib = flutter_audio_streamer.sum(1, 2);
-  print(lib);
+
   runApp(const MyApp());
 }
 

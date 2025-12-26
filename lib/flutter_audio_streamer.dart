@@ -17,15 +17,17 @@ class FlutterAudioStreamer {
 
   /// Initialize native audio stack (shout + lame)
   void init({
-    required String host,
+    required Pointer<Char> host,
     required int port,
-    required String mount,
-    required String password,
+    required Pointer<Char> mount,
+    required Pointer<Char> password,
     int sampleRate = 44100,
     int channels = 2,
     int bitrate = 128,
   }) {
-   
+   _bindings.fas_init();
+   _bindings.fas_set_stream_info(host, port, mount, password);
+   print("✅ fas_set_stream_info called");
   }
 
   /// Start streaming
