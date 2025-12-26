@@ -1,18 +1,15 @@
 # Run with `dart run ffigen --config ffigen.yaml`.
-name: FlutterAudioStreamerBindings
+name: LibShout
 description: |
-  Bindings for `src/flutter_audio_streamer.h`.
+  Bindings for `libshout`.
 
   Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
-output: 'lib/flutter_audio_streamer_bindings_generated.dart'
+output: 'lib/src/libshout_bindings.dart'
 headers:
   entry-points:
-    - 'src/flutter_audio_streamer.h'
-    - ios/lame_wrapper.h
-    - src/Classes/shout_wrapper.h
-    - src/Classes/lame_wrapper.h
+    - 'ios/include/shout/shout.h'
   include-directives:
-    - 'src/flutter_audio_streamer.h'
+    - 'ios/include/shout/shout.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types

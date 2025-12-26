@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:ffi';
-import 'package:ffi/ffi.dart';
 
-import 'package:flutter_audio_streamer/flutter_audio_streamer.dart' as flutter_audio_streamer;
+//import 'package:flutter_audio_streamer/flutter_audio_streamer.dart';
 
 void main() {
-
+// final shout = Shout();
+// // Configure connection
+// shout.host = '167.71.141.252';
+// shout.port = 8000;
+// shout.user = 'source';
+// shout.password = 'moses@do';
+// shout.mount = '/koinonia-global';
+// shout.protocol = ShoutProtocol.HTTP;
+// shout.format = ShoutFormat.MP3;
+// Connect
+try {
+  //shout.connect();
+  print('Connected!');
+} catch (e) {
+  print('Error: $e');
+}
+print('Connected!');
   runApp(const MyApp());
 }
 
@@ -18,15 +33,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late int sumResult;
-  late Future<int> sumAsyncResult;
+  // late int sumResult;
+  // late Future<int> sumAsyncResult;
   
-
   @override
   void initState() {
+    print("hello");
     super.initState();
-    sumResult = flutter_audio_streamer.sum(1, 2);
-    sumAsyncResult = flutter_audio_streamer.sumAsync(3, 4);
   }
 
   @override
@@ -51,23 +64,10 @@ class _MyAppState extends State<MyApp> {
                 ),
                 spacerSmall,
                 Text(
-                  'sum(1, 2) = $sumResult',
+                  'sum(1, 2)',
                   style: textStyle,
                   textAlign: TextAlign.center,
-                ),
-                spacerSmall,
-                FutureBuilder<int>(
-                  future: sumAsyncResult,
-                  builder: (BuildContext context, AsyncSnapshot<int> value) {
-                    final displayValue =
-                        (value.hasData) ? value.data : 'loading';
-                    return Text(
-                      'await sumAsync(3, 4) = $displayValue',
-                      style: textStyle,
-                      textAlign: TextAlign.center,
-                    );
-                  },
-                ),
+                )
               ],
             ),
           ),
