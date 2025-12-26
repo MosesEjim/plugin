@@ -16,8 +16,10 @@ class Shout {
   }
 
   void _init() {
+    print('Initializing libshout...');
     _lib.shout_init();
     _shout = _lib.shout_new();
+    print('Shout instance created: $_shout');
     if (_shout == nullptr) {
       throw Exception('Failed to create shout instance');
     }
