@@ -8,20 +8,48 @@ class Shout {
   Pointer<shout_t> _shout = nullptr;
 
   Shout() {
-    final DynamicLibrary dylib = Platform.isIOS
-        ? DynamicLibrary.process()
-        : DynamicLibrary.open('libshout.so'); // Fallback for other platforms if needed
-    _lib = LibShout(dylib);
-    _init();
+    try {
+      if (Platform.isIOS) {
+        print('Platform: iOS (Static/Process)');
+        final dylib = DynamicLibrary.process();
+        _lib = LibShout(dylib);
+      } else if (Platform.isAndroid) {
+        print('Platform: Android (libshout.so)');
+        final dylib = DynamicLibrary.open('libshout.so');
+        _lib = LibShout(dylib);
+      } else if (Platform.isMacOS) {
+        print('Platform: macOS (libshout.dylib)');
+        // Try opening local dylib if running from source/example, or system installed
+        try {
+           final dylib = DynamicLibrary.open('libshout.dylib');
+           _lib = LibShout(dylib);
+        } catch (e) {
+           print('Failed to open libshout.dylib, trying /usr/local/lib/libshout.dylib');
+           final dylib = DynamicLibrary.open('/usr/local/lib/libshout.dylib');
+           _lib = LibShout(dylib);
+        }
+      } else {
+        print('Platform: Other (libshout.so fallback)');
+        final dylib = DynamicLibrary.open('libshout.so');
+        _lib = LibShout(dylib);
+      }
+      _init();
+    } catch (e, stack) {
+      print('CRITICAL ERROR during Shout initialization: $e');
+      print(stack);
+      rethrow;
+    }
   }
 
   void _init() {
-    print('Initializing libshout...');
+    print('Calling shout_init()...');
     _lib.shout_init();
+    print('Calling shout_new()...');
     _shout = _lib.shout_new();
     print('Shout instance created: $_shout');
+    
     if (_shout == nullptr) {
-      throw Exception('Failed to create shout instance');
+      throw Exception('Failed to create shout instance (returned nullptr)');
     }
   }
 

@@ -16,6 +16,12 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		97FA00E85867C77282A62352 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9046538410AD94EE28420C35 /* Pods_RunnerTests.framework */; };
 		D658DDD98C098622CBC7D469 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27358D229D9B48104BDF7A23 /* Pods_Runner.framework */; };
+		F56C80B92EFEE01A00DAEB28 /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56C80B32EFEE01A00DAEB28 /* libogg.a */; };
+		F56C80BA2EFEE01A00DAEB28 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56C80B42EFEE01A00DAEB28 /* libmp3lame.a */; };
+		F56C80BB2EFEE01A00DAEB28 /* libvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56C80B52EFEE01A00DAEB28 /* libvorbis.a */; };
+		F56C80BC2EFEE01A00DAEB28 /* libvorbisenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56C80B62EFEE01A00DAEB28 /* libvorbisenc.a */; };
+		F56C80BD2EFEE01A00DAEB28 /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56C80B72EFEE01A00DAEB28 /* libvorbisfile.a */; };
+		F56C80BE2EFEE01A00DAEB28 /* libshout.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56C80B82EFEE01A00DAEB28 /* libshout.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +71,12 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABD40E3CB43CC9235065B1BC /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		B4FA6459D3C10931B23B690A /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
+		F56C80B32EFEE01A00DAEB28 /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = ../../ios/lib/libogg.a; sourceTree = "<group>"; };
+		F56C80B42EFEE01A00DAEB28 /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmp3lame.a; path = ../../ios/lib/libmp3lame.a; sourceTree = "<group>"; };
+		F56C80B52EFEE01A00DAEB28 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = ../../ios/lib/libvorbis.a; sourceTree = "<group>"; };
+		F56C80B62EFEE01A00DAEB28 /* libvorbisenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisenc.a; path = ../../ios/lib/libvorbisenc.a; sourceTree = "<group>"; };
+		F56C80B72EFEE01A00DAEB28 /* libvorbisfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile.a; path = ../../ios/lib/libvorbisfile.a; sourceTree = "<group>"; };
+		F56C80B82EFEE01A00DAEB28 /* libshout.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshout.a; path = ../../ios/lib/libshout.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +92,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F56C80B92EFEE01A00DAEB28 /* libogg.a in Frameworks */,
+				F56C80BA2EFEE01A00DAEB28 /* libmp3lame.a in Frameworks */,
+				F56C80BB2EFEE01A00DAEB28 /* libvorbis.a in Frameworks */,
+				F56C80BC2EFEE01A00DAEB28 /* libvorbisenc.a in Frameworks */,
+				F56C80BD2EFEE01A00DAEB28 /* libvorbisfile.a in Frameworks */,
+				F56C80BE2EFEE01A00DAEB28 /* libshout.a in Frameworks */,
 				D658DDD98C098622CBC7D469 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,6 +116,12 @@
 		78EFA93CBAE1BEFC590DD4BD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F56C80B42EFEE01A00DAEB28 /* libmp3lame.a */,
+				F56C80B32EFEE01A00DAEB28 /* libogg.a */,
+				F56C80B82EFEE01A00DAEB28 /* libshout.a */,
+				F56C80B52EFEE01A00DAEB28 /* libvorbis.a */,
+				F56C80B62EFEE01A00DAEB28 /* libvorbisenc.a */,
+				F56C80B72EFEE01A00DAEB28 /* libvorbisfile.a */,
 				27358D229D9B48104BDF7A23 /* Pods_Runner.framework */,
 				9046538410AD94EE28420C35 /* Pods_RunnerTests.framework */,
 			);
@@ -161,7 +185,6 @@
 				B4FA6459D3C10931B23B690A /* Pods-RunnerTests.release.xcconfig */,
 				426C11470D6B69C599569CCE /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -425,6 +448,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -458,6 +482,25 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"mp3lame\"",
+					"-l\"ogg\"",
+					"-l\"shout\"",
+					"-l\"vorbis\"",
+					"-l\"vorbisenc\"",
+					"-l\"vorbisfile\"",
+					"-framework",
+					"\"flutter_audio_streamer\"",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterAudioStreamerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -548,6 +591,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -605,6 +649,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -641,6 +686,25 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"mp3lame\"",
+					"-l\"ogg\"",
+					"-l\"shout\"",
+					"-l\"vorbis\"",
+					"-l\"vorbisenc\"",
+					"-l\"vorbisfile\"",
+					"-framework",
+					"\"flutter_audio_streamer\"",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterAudioStreamerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -662,6 +726,25 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"mp3lame\"",
+					"-l\"ogg\"",
+					"-l\"shout\"",
+					"-l\"vorbis\"",
+					"-l\"vorbisenc\"",
+					"-l\"vorbisfile\"",
+					"-framework",
+					"\"flutter_audio_streamer\"",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
+					"-Wl,-all_load",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterAudioStreamerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
