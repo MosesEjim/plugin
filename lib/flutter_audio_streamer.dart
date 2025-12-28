@@ -127,12 +127,13 @@ class Shout {
   }
 
   // Actions
-  void connect() {
+  int connect() {
     final result = _lib.shout_open(_shout);
     if (result != SHOUTERR_SUCCESS) {
       final error = _lib.shout_get_error(_shout).cast<Utf8>().toDartString();
       throw Exception('Failed to connect: $error');
     }
+    return 0;
   }
 
   void disconnect() {
