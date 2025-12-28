@@ -1,7 +1,9 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'src/libshout_bindings.dart';
+import 'src/lame_bindings.dart';
 
 class Shout {
   late LibShout _lib;
@@ -177,4 +179,144 @@ class ShoutProtocol {
 class ShoutFormat {
   static const int OGG = SHOUT_FORMAT_OGG;
   static const int MP3 = SHOUT_FORMAT_MP3;
+}
+
+class Lame {
+  late LibLame _lib;
+  Pointer<lame_global_flags> _lame = nullptr;
+
+  Lame() {
+    try {
+      if (Platform.isIOS) {
+        final dylib = DynamicLibrary.process();
+        _lib = LibLame(dylib);
+      } else if (Platform.isAndroid) {
+        final dylib = DynamicLibrary.open('libmp3lame.so');
+        _lib = LibLame(dylib);
+      } else if (Platform.isMacOS) {
+        try {
+           final dylib = DynamicLibrary.open('libmp3lame.dylib');
+           _lib = LibLame(dylib);
+        } catch (e) {
+           print('Failed to open libmp3lame.dylib, trying /usr/local/lib/libmp3lame.dylib');
+           final dylib = DynamicLibrary.open('/usr/local/lib/libmp3lame.dylib');
+           _lib = LibLame(dylib);
+        }
+      } else {
+        final dylib = DynamicLibrary.open('libmp3lame.so');
+        _lib = LibLame(dylib);
+      }
+      _init();
+    } catch (e, stack) {
+      print('CRITICAL ERROR during Lame initialization: $e');
+      print(stack);
+      rethrow;
+    }
+  }
+
+  void _init() {
+    print('Calling lame_init()...');
+    _lame = _lib.lame_init();
+    print('Lame instance created: $_lame');
+    
+    if (_lame == nullptr) {
+      throw Exception('Failed to create lame instance (returned nullptr)');
+    }
+  }
+
+  void close() {
+    if (_lame != nullptr) {
+      _lib.lame_close(_lame);
+      _lame = nullptr;
+    }
+  }
+
+  // Configuration setters
+  set inSamplerate(int rate) {
+    _lib.lame_set_in_samplerate(_lame, rate);
+  }
+
+  set numChannels(int channels) {
+    _lib.lame_set_num_channels(_lame, channels);
+  }
+
+  set brate(int bitrate) {
+    _lib.lame_set_brate(_lame, bitrate);
+  }
+  
+  set quality(int quality) {
+    _lib.lame_set_quality(_lame, quality);
+  }
+
+  set mode(int mode) {
+    _lib.lame_set_mode(_lame, MPEG_mode_e.fromValue(mode));
+  }
+
+  void initParams() {
+    final result = _lib.lame_init_params(_lame);
+    if (result < 0) {
+      throw Exception('Failed to initialize lame params: $result');
+    }
+  }
+
+  List<int> encode(List<int> pcmData) {
+    final int numSamples = pcmData.length ~/ 2; // Assuming 16-bit PCM (2 bytes per sample)
+    
+    // Allocate buffers
+    // mp3buf_size = 1.25 * num_samples + 7200
+    final int mp3BufSize = (1.25 * numSamples + 7200).ceil();
+    final Pointer<UnsignedChar> mp3Buf = calloc<UnsignedChar>(mp3BufSize);
+    
+    // We need separate left and right buffers if stereo, but for simplicity let's assume interleaved input
+    // and use lame_encode_buffer_interleaved for now if standard PCM.
+    // However, if the input is raw bytes, we need to cast them to short (16-bit).
+    
+    final Pointer<Short> pcmBuffer = calloc<Short>(numSamples);
+    final ByteData byteData = ByteData.sublistView(Uint8List.fromList(pcmData));
+    
+    for (int i = 0; i < numSamples; i++) {
+        pcmBuffer[i] = byteData.getInt16(i * 2, Endian.little); // Assuming little endian
+    }
+
+    final int result = _lib.lame_encode_buffer_interleaved(
+      _lame,
+      pcmBuffer,
+      numSamples ~/ _lib.lame_get_num_channels(_lame), // num_samples per channel
+      mp3Buf,
+      mp3BufSize,
+    );
+    
+    calloc.free(pcmBuffer);
+
+    if (result < 0) {
+       calloc.free(mp3Buf);
+       throw Exception('Lame encoding failed: $result');
+    }
+
+    final List<int> output = mp3Buf.cast<Uint8>().asTypedList(result).toList();
+    calloc.free(mp3Buf);
+    
+    return output;
+  }
+
+  List<int> flush() {
+    final int mp3BufSize = 7200; // Safe size for flush
+    final Pointer<UnsignedChar> mp3Buf = calloc<UnsignedChar>(mp3BufSize);
+    
+    final int result = _lib.lame_encode_flush(
+      _lame,
+      mp3Buf,
+      mp3BufSize
+    );
+
+    if (result < 0) {
+       calloc.free(mp3Buf);
+       throw Exception('Lame flush failed: $result');
+    }
+
+    final List<int> output = mp3Buf.cast<Uint8>().asTypedList(result).toList();
+    calloc.free(mp3Buf);
+    
+    return output;
+  }
 }
