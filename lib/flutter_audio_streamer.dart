@@ -237,12 +237,16 @@ class Lame {
     _lib.lame_set_in_samplerate(_lame, rate);
   }
 
-  set numChannels(int channels) {
-    _lib.lame_set_num_channels(_lame, channels);
+  set outSamplerate(int rate) {
+    _lib.lame_set_out_samplerate(_lame, rate);
   }
 
-  set brate(int bitrate) {
+  set bitrate(int bitrate) {
     _lib.lame_set_brate(_lame, bitrate);
+  }
+
+  set numChannels(int channels) {
+    _lib.lame_set_num_channels(_lame, channels);
   }
   
   set quality(int quality) {
