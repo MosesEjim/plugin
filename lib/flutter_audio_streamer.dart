@@ -264,45 +264,42 @@ class Lame {
     }
   }
 
-  List<int> encode(List<int> pcmData) {
-    final int numSamples = pcmData.length ~/ 2; // Assuming 16-bit PCM (2 bytes per sample)
-    
-    // Allocate buffers
-    // mp3buf_size = 1.25 * num_samples + 7200
-    final int mp3BufSize = (1.25 * numSamples + 7200).ceil();
-    final Pointer<UnsignedChar> mp3Buf = calloc<UnsignedChar>(mp3BufSize);
-    
-    // We need separate left and right buffers if stereo, but for simplicity let's assume interleaved input
-    // and use lame_encode_buffer_interleaved for now if standard PCM.
-    // However, if the input is raw bytes, we need to cast them to short (16-bit).
-    
-    final Pointer<Short> pcmBuffer = calloc<Short>(numSamples);
-    final ByteData byteData = ByteData.sublistView(Uint8List.fromList(pcmData));
-    
-    for (int i = 0; i < numSamples; i++) {
-        pcmBuffer[i] = byteData.getInt16(i * 2, Endian.little); // Assuming little endian
-    }
+List<int> encode(Float32List floatSamples) {
+  final int numSamples = floatSamples.length;
 
-    final int result = _lib.lame_encode_buffer_interleaved(
-      _lame,
-      pcmBuffer,
-      numSamples ~/ _lib.lame_get_num_channels(_lame), // num_samples per channel
-      mp3Buf,
-      mp3BufSize,
-    );
-    
-    calloc.free(pcmBuffer);
+  // Allocate PCM buffer (int16)
+  final Pointer<Int16> pcmBuffer = calloc<Int16>(numSamples);
 
-    if (result < 0) {
-       calloc.free(mp3Buf);
-       throw Exception('Lame encoding failed: $result');
-    }
-
-    final List<int> output = mp3Buf.cast<Uint8>().asTypedList(result).toList();
-    calloc.free(mp3Buf);
-    
-    return output;
+  for (int i = 0; i < numSamples; i++) {
+    final double v = floatSamples[i].clamp(-1.0, 1.0);
+    pcmBuffer[i] = (v * 32767).round();
   }
+
+  // MP3 buffer size: 1.25 * samples + 7200
+  final int mp3BufSize = (1.25 * numSamples + 7200).ceil();
+  final Pointer<Uint8> mp3Buf = calloc<Uint8>(mp3BufSize);
+
+  final int bytesEncoded = _lib.lame_encode_buffer(
+    _lame,
+    pcmBuffer,          // left channel
+    nullptr,            // right channel (mono)
+    numSamples,
+    mp3Buf,
+    mp3BufSize,
+  );
+
+  calloc.free(pcmBuffer);
+
+  if (bytesEncoded < 0) {
+    calloc.free(mp3Buf);
+    throw Exception('LAME encoding failed: $bytesEncoded');
+  }
+
+  final output = mp3Buf.asTypedList(bytesEncoded).toList();
+  calloc.free(mp3Buf);
+
+  return output;
+}
 
   List<int> flush() {
     final int mp3BufSize = 7200; // Safe size for flush
