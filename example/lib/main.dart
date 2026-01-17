@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:ffi';
 import 'package:flutter_audio_streamer/flutter_audio_streamer.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 
 void main() {
@@ -52,22 +52,22 @@ class _MyAppState extends State<MyApp> {
 
     debugPrint('Connecting to MP3 source...');
 
-    final request = http.Request('GET', Uri.parse(url));
-    final response = await request.send();
+    // final request = http.Request('GET', Uri.parse(url));
+    // final response = await request.send();
 
-    if (response.statusCode != 200) {
-      debugPrint('HTTP error ${response.statusCode}');
-      return;
-    }
+    // if (response.statusCode != 200) {
+    //   debugPrint('HTTP error ${response.statusCode}');
+    //   return;
+    // }
 
     debugPrint('Streaming started');
 
-    await for (final List<int> chunk in response.stream) {
-      // 👇 THIS is where you send data to libshout
-      shout.send(chunk);
+    // await for (final List<int> chunk in response.stream) {
+    //   // 👇 THIS is where you send data to libshout
+    //   shout.send(chunk);
 
-      debugPrint('Sent chunk: ${chunk.length} bytes');
-    }
+    //   debugPrint('Sent chunk: ${chunk.length} bytes');
+    // }
 
     debugPrint('Streaming finished');
     streaming = false;
