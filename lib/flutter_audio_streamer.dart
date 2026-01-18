@@ -264,23 +264,25 @@ class Lame {
     }
   }
 
-List<int> encodeFloat32(Float32List floatSamples) {
+List<int> encode(Float32List floatSamples) {
   final int numSamples = floatSamples.length;
 
-  final Pointer<Short> pcmBuffer = calloc<Short>(numSamples);
+  // Allocate PCM buffer (int16)
+  final Pointer<Int16> pcmBuffer = calloc<Int16>(numSamples);
 
   for (int i = 0; i < numSamples; i++) {
     final double v = floatSamples[i].clamp(-1.0, 1.0);
     pcmBuffer[i] = (v * 32767).round();
   }
 
+  // MP3 buffer size: 1.25 * samples + 7200
   final int mp3BufSize = (1.25 * numSamples + 7200).ceil();
-  final Pointer<UnsignedChar> mp3Buf = calloc<UnsignedChar>(mp3BufSize);
+  final Pointer<Uint8> mp3Buf = calloc<Uint8>(mp3BufSize);
 
   final int bytesEncoded = _lib.lame_encode_buffer(
     _lame,
-    pcmBuffer,
-    nullptr,
+    pcmBuffer,          // left channel
+    nullptr,            // right channel (mono)
     numSamples,
     mp3Buf,
     mp3BufSize,
@@ -293,13 +295,11 @@ List<int> encodeFloat32(Float32List floatSamples) {
     throw Exception('LAME encoding failed: $bytesEncoded');
   }
 
-  final output =
-      mp3Buf.cast<Uint8>().asTypedList(bytesEncoded).toList();
-
+  final output = mp3Buf.asTypedList(bytesEncoded).toList();
   calloc.free(mp3Buf);
+
   return output;
 }
-
 
   List<int> flush() {
     final int mp3BufSize = 7200; // Safe size for flush
