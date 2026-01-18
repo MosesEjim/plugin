@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_audio_streamer'
-  s.version          = '0.0.4'
+  s.version          = '0.0.5'
   s.summary          = 'A new Flutter FFI plugin project.'
   s.description      = <<-DESC
 A new Flutter FFI plugin project.
@@ -21,6 +21,7 @@ A new Flutter FFI plugin project.
   s.source_files = 'Classes/**/*.{h,m,mm,c}'
   s.public_header_files = 'Classes/**/*.h'
   s.vendored_libraries = 'lib/*.a'
+  s.preserve_paths = 'include/**/*', 'lib/*.a'
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
 
@@ -28,7 +29,7 @@ A new Flutter FFI plugin project.
   s.pod_target_xcconfig = { 
     'DEFINES_MODULE' => 'YES', 
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' ,
-    'HEADER_SEARCH_PATHS' => '$(inherited) "$(PODS_TARGET_SRCROOT)/include/**"',
+    'HEADER_SEARCH_PATHS' => '$(inherited) "$(PODS_TARGET_SRCROOT)/include"',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
     'OTHER_LDFLAGS' => '-force_load "$(PODS_TARGET_SRCROOT)/lib/libshout.a" -force_load "$(PODS_TARGET_SRCROOT)/lib/libogg.a" -force_load "$(PODS_TARGET_SRCROOT)/lib/libvorbis.a" -force_load "$(PODS_TARGET_SRCROOT)/lib/libvorbisenc.a" -force_load "$(PODS_TARGET_SRCROOT)/lib/libvorbisfile.a" -force_load "$(PODS_TARGET_SRCROOT)/lib/libmp3lame.a"'
   }
