@@ -1,5 +1,18 @@
 #include <shout/shout.h>
+#include <lame/lame.h>
 #include <stdio.h>
+
+// Linker anchor function - called from Swift to prevent dead-code stripping
+// This function name is unique and not declared in any header
+int flutter_audio_streamer_force_link(void) {
+    // Reference key functions from both libraries to ensure they're linked
+    volatile void* a = (void*)shout_init;
+    volatile void* b = (void*)shout_new;
+    volatile void* c = (void*)lame_init;
+    volatile void* d = (void*)lame_close;
+    (void)a; (void)b; (void)c; (void)d;
+    return 1;
+}
 
 // Initialization
 int shout_init_wrapper(void) {
