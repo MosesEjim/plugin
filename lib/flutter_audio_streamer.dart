@@ -14,7 +14,16 @@ class Shout {
       if (Platform.isIOS) {
         print('Platform: iOS (Static/Process)');
         final dylib = DynamicLibrary.process();
-        _lib = LibShout(dylib);
+        // On iOS, symbols from static libraries might not be exported.
+        // We use LibShout.fromLookup to fallback to the wrapper functions if raw symbols are missing.
+        _lib = LibShout.fromLookup(<T extends NativeType>(String symbol) {
+          try {
+            return dylib.lookup<T>(symbol);
+          } catch (e) {
+            // Fallback to wrapper names for iOS-specific static link export
+            return dylib.lookup<T>('${symbol}_wrapper');
+          }
+        });
       } else if (Platform.isAndroid) {
         print('Platform: Android (libshout.so)');
         final dylib = DynamicLibrary.open('libshout.so');
@@ -190,7 +199,16 @@ class Lame {
     try {
       if (Platform.isIOS) {
         final dylib = DynamicLibrary.process();
-        _lib = LibLame(dylib);
+        // On iOS, symbols from static libraries might not be exported.
+        // We use LibLame.fromLookup to fallback to the wrapper functions if raw symbols are missing.
+        _lib = LibLame.fromLookup(<T extends NativeType>(String symbol) {
+          try {
+            return dylib.lookup<T>(symbol);
+          } catch (e) {
+            // Fallback to wrapper names for iOS-specific static link export
+            return dylib.lookup<T>('${symbol}_wrapper');
+          }
+        });
       } else if (Platform.isAndroid) {
         final dylib = DynamicLibrary.open('libmp3lame.so');
         _lib = LibLame(dylib);
