@@ -150,7 +150,7 @@ class Shout {
 
     if (result != SHOUTERR_SUCCESS) {
        final error = _lib.shout_get_error(_shout).cast<Utf8>().toDartString();
-       throw Exception('Failed to send data: $error');
+       //throw Exception('Failed to send data: $error');
     }
     
     _lib.shout_sync(_shout);
