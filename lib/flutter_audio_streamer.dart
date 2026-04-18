@@ -140,7 +140,7 @@ class Shout {
     _lib.shout_close(_shout);
   }
 
-  void send(List<int> data) {
+  int send(List<int> data) {
     final cData = calloc<UnsignedChar>(data.length);
     final cDataList = cData.cast<Uint8>().asTypedList(data.length);
     cDataList.setAll(0, data);
@@ -148,12 +148,8 @@ class Shout {
     final result = _lib.shout_send(_shout, cData, data.length);
     calloc.free(cData);
 
-    if (result != SHOUTERR_SUCCESS) {
-       final error = _lib.shout_get_error(_shout).cast<Utf8>().toDartString();
-       //throw Exception('Failed to send data: $error');
-    }
-    
     _lib.shout_sync(_shout);
+    return result;
   }
   
   void setMetadata(String key, String value) {
